@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/head"
+        layout="@layout/head" />
+
+    <com.xdd.coolreader.view.MyGridView
+        android:id="@+id/bookShelf"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/head"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:horizontalSpacing="5dp"
+        android:listSelector="#00000000"
+        android:minHeight="2000dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:scrollbars="none"
+        android:verticalSpacing="20dp"/>
+
+</RelativeLayout>
