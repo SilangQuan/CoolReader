@@ -43,6 +43,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Environment;
+import android.util.Log;
 
 public class FileUtil
 {
@@ -308,109 +309,122 @@ public class FileUtil
 
 	//判断SD卡是否存�?	
 	public static boolean hasSdcard() {
-	String status = Environment.getExternalStorageState();
-	if (status.equals(Environment.MEDIA_MOUNTED)) {
-		return true;
-	} else {
+		String status = Environment.getExternalStorageState();
+		if (status.equals(Environment.MEDIA_MOUNTED)) {
+			return true;
+		} else {
 
-		return false;
-	}
-}
-
-//创建目录
-public static void createPath(String path) {
-	File file = new File(path);
-	if (!file.exists()) {
-		file.mkdir();
-	}
-}
-
-//Unzip File from assert
-public static boolean unZip(String zipName,String path,Context c)
-{
-	try
-	{
-		InputStream is =c.getAssets().open(zipName);
-		ZipInputStream zin = new ZipInputStream(is);
-		ZipEntry ze = null;
-		String name;
-		File file;
-		while ((ze = zin.getNextEntry()) != null)
-		{
-			name = ze.getName();
-			// Log.v("Decompress", "Unzipping " + name);
-
-			if(ze.isDirectory())
-			{
-				file = new File(path+ File.separator + name);
-				if(!file.exists())
-				{
-					if(!file.mkdir())
-					{
-						return false;
-					}
-				}
-			}else
-			{
-				FileOutputStream fout = new FileOutputStream(path+ File.separator + name);
-				byte[] buf = new byte[1024 * 4];
-				int len;
-				while ((len = zin.read(buf)) > 0)
-				{
-					fout.write(buf, 0, len);
-				}
-				buf = null;
-				zin.closeEntry();
-				fout.close();
-			}
-		}
-		zin.close();
-	}catch (Exception e)
-	{
-		e.printStackTrace();
-		return false;
-	}
-	return true;
-}
-//Get filename without ext.
-public  static String getFileName(String file)
-{
-	int lastIndex =file.lastIndexOf(".");
-	if(lastIndex == -1)
-		return null;
-	return file.substring(0,lastIndex).trim().toLowerCase();
-}
-public  static String getFileNameByPath(String path)
-{
-	int lastIndex =path.lastIndexOf("/");
-	if(lastIndex == -1)
-		return null;
-	return path.substring(lastIndex+1,path.length()).trim();
-}
-
-public static File[] getDocs(File f)
-{
-	File[] tmpFiles=f.listFiles(new FilenameFilter() {
-		public boolean accept(File file, String name) {
-			if (name.toLowerCase().endsWith(".pdf"))
-				return true;
-			if (name.toLowerCase().endsWith(".xps"))
-				return true;
-			if (name.toLowerCase().endsWith(".cbz"))
-				return true;
-			if (name.toLowerCase().endsWith(".ppt"))
-				return true;
-			if (name.toLowerCase().endsWith(".xls"))
-				return true;
-			if (name.toLowerCase().endsWith(".doc"))
-				return true;
-			if (name.toLowerCase().endsWith(".png"))
-				return true;
 			return false;
 		}
-	});
-	return tmpFiles;
-}
+	}
 
+	//创建目录
+	public static void createPath(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			file.mkdir();
+		}
+	}
+
+	//Unzip File from assert
+	public static boolean unZip(String zipName,String path,Context c)
+	{
+		try
+		{
+			InputStream is =c.getAssets().open(zipName);
+			ZipInputStream zin = new ZipInputStream(is);
+			ZipEntry ze = null;
+			String name;
+			File file;
+			while ((ze = zin.getNextEntry()) != null)
+			{
+				name = ze.getName();
+				// Log.v("Decompress", "Unzipping " + name);
+
+				if(ze.isDirectory())
+				{
+					file = new File(path+ File.separator + name);
+					if(!file.exists())
+					{
+						if(!file.mkdir())
+						{
+							return false;
+						}
+					}
+				}else
+				{
+					FileOutputStream fout = new FileOutputStream(path+ File.separator + name);
+					byte[] buf = new byte[1024 * 4];
+					int len;
+					while ((len = zin.read(buf)) > 0)
+					{
+						fout.write(buf, 0, len);
+					}
+					buf = null;
+					zin.closeEntry();
+					fout.close();
+				}
+			}
+			zin.close();
+		}catch (Exception e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	//Get filename without ext.
+	public  static String getFileName(String file)
+	{
+		int lastIndex =file.lastIndexOf(".");
+		if(lastIndex == -1)
+			return null;
+		return file.substring(0,lastIndex).trim().toLowerCase();
+	}
+	
+	public  static String getFileNameByPath(String path)
+	{
+		int lastIndex =path.lastIndexOf("/");
+		if(lastIndex == -1)
+			return null;
+		return path.substring(lastIndex+1,path.length()).trim();
+	}
+
+	public static File[] getDocs(File f)
+	{
+		File[] tmpFiles = f.listFiles(new FilenameFilter() {
+			public boolean accept(File file, String name) {
+				if (name.toLowerCase().endsWith(".pdf"))
+					return true;
+				if (name.toLowerCase().endsWith(".xps"))
+					return true;
+				if (name.toLowerCase().endsWith(".cbz"))
+					return true;
+				if (name.toLowerCase().endsWith(".ppt"))
+					return true;
+				if (name.toLowerCase().endsWith(".xls"))
+					return true;
+				if (name.toLowerCase().endsWith(".doc"))
+					return true;
+				if (name.toLowerCase().endsWith(".png"))
+					return true;
+				return false;
+			}
+		});
+		return tmpFiles;
+	}
+
+	public static ArrayList<String> getFilenames(String filePath)
+	{
+		ArrayList<String> fns = new ArrayList<String>();
+		File f = new File(filePath);
+		File[] tmpFiles = getDocs(f);
+		for(File file: tmpFiles)
+		{
+			fns.add(file.getName());
+			//Log.e("name",file.getName());
+		}
+		return fns;
+	}
 
 }

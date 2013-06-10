@@ -3,6 +3,7 @@ package com.artifex.mupdfdemo;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class MuPDFPageAdapter extends BaseAdapter {
 		final MuPDFPageView pageView;
 		if (convertView == null) {
 			pageView = new MuPDFPageView(mContext, mCore, new Point(parent.getWidth(), parent.getHeight()));
+			
+			
 		} else {
 			pageView = (MuPDFPageView) convertView;
 		}

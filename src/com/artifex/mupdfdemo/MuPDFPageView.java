@@ -3,6 +3,7 @@ package com.artifex.mupdfdemo;
 import java.util.ArrayList;
 
 import com.xdd.coolreader.R;
+import com.xdd.coolreader.util.ImageUtil;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -372,7 +373,9 @@ public class MuPDFPageView extends PageView implements MuPDFView {
 		mAddInk = new AsyncTask<PointF[][],Void,Void>() {
 			@Override
 			protected Void doInBackground(PointF[][]... params) {
-				mCore.addInkAnnotation(mPageNumber, params[0]);
+				
+				mCore.addInkAnnotation(mPageNumber, params[0], ImageUtil.getColorR(MuPDFActivity.INK_COLOR),
+						ImageUtil.getColorG(MuPDFActivity.INK_COLOR), ImageUtil.getColorB(MuPDFActivity.INK_COLOR));
 				return null;
 			}
 

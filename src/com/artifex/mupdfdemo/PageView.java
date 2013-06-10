@@ -15,6 +15,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -102,11 +103,11 @@ class TextSelector {
 }
 
 public abstract class PageView extends ViewGroup {
-	private static final int HIGHLIGHT_COLOR = 0x802572AC;
+	private static final int HIGHLIGHT_COLOR = 0x602572AC;
 	private static final int LINK_COLOR = 0x80AC7225;
 	private static final int BOX_COLOR = 0xFF4444FF;
-	private static final int INK_COLOR = 0xFFFF0000;
-	private static final float INK_THICKNESS = 10.0f;
+	//private  int INK_COLOR = 0xFFff4444;
+	private static final float INK_THICKNESS = 5.0f;
 	private static final int BACKGROUND_COLOR = 0xFFFFFFFF;
 	private static final int PROGRESS_DIALOG_DELAY = 200;
 	protected final Context   mContext;
@@ -354,10 +355,11 @@ public abstract class PageView extends ViewGroup {
 					}
 
 					if (mDrawing != null) {
-						Path path = new Path();
+						Path path;
 						PointF p;
 						Iterator<ArrayList<PointF>> it = mDrawing.iterator();
 						while (it.hasNext()) {
+							path = new Path();
 							ArrayList<PointF> arc = it.next();
 							if (arc.size() >= 2) {
 								Iterator<PointF> iit = arc.iterator();
@@ -368,11 +370,12 @@ public abstract class PageView extends ViewGroup {
 									path.lineTo(p.x*scale, p.y*scale);
 								}
 							}
+							paint.setStyle(Paint.Style.STROKE);
+							paint.setStrokeWidth(INK_THICKNESS*scale);
+							paint.setColor(MuPDFActivity.INK_COLOR);
+							canvas.drawPath(path, paint);
 						}
-						paint.setStyle(Paint.Style.STROKE);
-						paint.setStrokeWidth(INK_THICKNESS*scale);
-						paint.setColor(INK_COLOR);
-						canvas.drawPath(path, paint);
+						
 					}
 				}
 			};
@@ -381,6 +384,7 @@ public abstract class PageView extends ViewGroup {
 		}
 		requestLayout();
 	}
+
 
 	public void setSearchBoxes(RectF searchBoxes[]) {
 		mSearchBoxes = searchBoxes;

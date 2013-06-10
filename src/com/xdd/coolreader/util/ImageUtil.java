@@ -7,16 +7,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Bitmap.Config;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.util.Log;
 
 import com.artifex.mupdfdemo.*;
+import com.xdd.coolreader.BookShelfActivity;
 
 public class ImageUtil {
 
@@ -24,6 +32,11 @@ public class ImageUtil {
 	private String mFileName;
 	private File orgImage;
 	private File thumbImage;
+	private Context mContext;
+	public ImageUtil(Context c)
+	{
+		mContext = c;
+	}
 	public void savePDFThumbnail(File f, int page) {
 		Bitmap orgBm;
 		Bitmap thumbBm;
@@ -44,7 +57,7 @@ public class ImageUtil {
 		orgBm = Bitmap.createBitmap((int)pageSize.x,(int)pageSize.y, Bitmap.Config.ARGB_8888);
 		core.gotoPage(page);
 		core.drawPage(orgBm,(int)pageSize.x,(int)pageSize.y, 0, 0, (int)pageSize.x,(int)pageSize.y);
-		
+
 		orgImage = new File("/"+filename+".png");
 
 		//保存原始图片
@@ -95,12 +108,14 @@ public class ImageUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-*/
+		 */
 	}
-	
-public static void screenShotPDF(MuPDFCore core,String filename,int page)
+
+	public void screenShotPDF(String filepath,int page)
 	{
 		Bitmap orgBm;
+		MuPDFCore core = openFile(filepath);
+		String bookName = FileUtil.getFileNameByPath(filepath);
 		if (core == null) {
 			Log.i("screenShot", "Core is null!");
 			return;
@@ -114,7 +129,10 @@ public static void screenShotPDF(MuPDFCore core,String filename,int page)
 		core.gotoPage(page);
 		core.drawPage(orgBm,(int)pageSize.x,(int)pageSize.y, 0, 0, (int)pageSize.x,(int)pageSize.y);
 
-		File orgImage = new File("/"+filename+"_"+page+".png");
+		//Bitmap shadowBm = drawImageDropShadow(orgBm);
+		//Bitmap shadowBm = toRoundCorner(orgBm,5);
+
+		File orgImage = new File(BookShelfActivity.CACHE_PATH+File.separator+FileUtil.getFileName(bookName)+"_"+page+".png");
 
 		//保存原始图片
 		try {
@@ -139,147 +157,101 @@ public static void screenShotPDF(MuPDFCore core,String filename,int page)
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 
 	}
-		/*
-	public static void screenShotPPT(SlideShow ppt,String filename,int page)
+	private MuPDFCore openFile(String path) {
+		int lastSlashPos = path.lastIndexOf('/');
+		mFileName = new String(lastSlashPos == -1 ? path
+				: path.substring(lastSlashPos + 1));
+		System.out.println("Trying to open " + path);
+		try {
+			core = new MuPDFCore(mContext,path);
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return core;
+	}
+
+	public static Bitmap drawImageDropShadow(Bitmap originalBitmap, int radius) {
+		BlurMaskFilter blurFilter = new BlurMaskFilter(radius,
+				BlurMaskFilter.Blur.NORMAL);
+		Paint shadowPaint = new Paint();
+		//shadowPaint.setColor(0xFFFFFF00);
+		//shadowPaint.setAlpha(20);
+		shadowPaint.setMaskFilter(blurFilter);
+		int[] offsetXY = new int[2];
+		Bitmap shadowBitmap = originalBitmap.extractAlpha(shadowPaint, offsetXY);
+		Bitmap shadowImage32 = shadowBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Canvas c = new Canvas(shadowImage32);
+		c.drawBitmap(originalBitmap, offsetXY[0], offsetXY[1], null);
+		return shadowImage32;
+	}
+
+	public static void screenShotPDF2(MuPDFCore core,String filename,int page)
 	{
-		Bitmap orgBmp;
-		Slide[] slide;
-		slide = ppt.getSlides();
-		final Dimension pgsize = ppt.getPageSize();
-		final Handler handler = new Handler();
+		Bitmap orgBm;
+		if (core == null) {
+			Log.i("screenShot", "Core is null!");
+			return;
+		}
+		Log.i("saveThumbnail", "pageNum:" + core.countPages());
 
-		orgBmp = Bitmap.createBitmap((int) pgsize.getWidth(),(int) pgsize.getHeight(), Config.RGB_565);
-		Canvas canvas = new Canvas(orgBmp);
-		Paint paint = new Paint();
-		paint.setColor(android.graphics.Color.WHITE);
-		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		canvas.drawPaint(paint);
+		System.out.println("Count:"+core.countPages());
+		PointF pageSize=core.getPageSize(0);
+		System.out.println("HW:"+pageSize.x+pageSize.y);
+		orgBm = Bitmap.createBitmap((int)pageSize.x,(int)pageSize.y, Bitmap.Config.ARGB_8888);
+		core.gotoPage(page);
+		core.drawPage(orgBm,(int)pageSize.x,(int)pageSize.y, 0, 0, (int)pageSize.x,(int)pageSize.y);
 
-		final Graphics2D graphics2d = new Graphics2D(canvas);
+		File orgImage = new File(BookShelfActivity.CACHE_PATH+File.separator+FileUtil.getFileName(filename)+"_"+page+".png");
 
-		final AtomicBoolean isCanceled = new AtomicBoolean(false);
-
-
-		slide[page].draw(graphics2d, isCanceled, handler,page);
-
-		File orgImage = new File(ChooseActivity.CACHE_PATH+"/"+filename+"_thumb.png");
-
+		//保存原始图片
 		try {
 			orgImage.createNewFile();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 
-		FileOutputStream fos = null;
+		FileOutputStream fOut = null;
 
 		try {
-			fos = new FileOutputStream(orgImage);
-			orgBmp.compress(Bitmap.CompressFormat.PNG, 50, fos);
+			fOut = new FileOutputStream(orgImage);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		orgBm.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+
 		try {
-			fos.flush();
-			fos.close();
+			fOut.flush();
+			fOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	public static void savePPTThumbnail(File f, int page)throws IOException {
-		Bitmap orgBmp;
-		Bitmap thumbBmp;
-		Slide[] slide;
-		SlideShow ppt;
-		final long cur = System.currentTimeMillis();
-
-		ppt = new SlideShow(new File(f.getPath()));
-		final Handler handler = new Handler();
-		final Dimension pgsize = ppt.getPageSize();
-		System.out.println("PageHW:"+pgsize.getHeight()+pgsize.getWidth());
-		//pgsize.
-		slide = ppt.getSlides();
-		//slide[0].draw(graphics, isCanceled, handler, position)
-		int slideCount = slide.length;
-
-		orgBmp = Bitmap.createBitmap((int) pgsize.getWidth(),(int) pgsize.getHeight(), Config.RGB_565);
-		Canvas canvas = new Canvas(orgBmp);
-		Paint paint = new Paint();
-		paint.setColor(android.graphics.Color.WHITE);
-		paint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		canvas.drawPaint(paint);
-
-		final Graphics2D graphics2d = new Graphics2D(canvas);
-
-		final AtomicBoolean isCanceled = new AtomicBoolean(false);
 
 
-		Log.d("TIME", "new SlideShow: " + (System.currentTimeMillis() - cur));
-
-		slide[page].draw(graphics2d, isCanceled, handler,page);
-
-		
-		Bitmap bm = Bitmap.createBitmap(320, 480, Config.ARGB_8888);  
-        Canvas canvas = new Canvas(bm);  
-        Paint p = new Paint();
-        p.setColor(android.graphics.Color.WHITE);
-        canvas.drawRect(50, 50, 200, 200, p);  
-        canvas.save(Canvas.ALL_SAVE_FLAG );  
-        canvas.restore();  
-		String filename=FileUtil.getFileName(f.getName());
-		File orgImage = new File(ChooseActivity.CACHE_PATH+"/"+filename+"_"+page+".png");
-
-		try {
-			orgImage.createNewFile();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		FileOutputStream fos = null;
-
-		try {
-			fos = new FileOutputStream(orgImage);
-			orgBmp.compress(Bitmap.CompressFormat.PNG, 50, fos);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			fos.flush();
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
+	public static float getColorR(int c)  
+	{  
+		int R = (c & 0x00FF0000 )>>16;  
+		return (float) (R/255.0);  
+	}  
 
+	public static float getColorG(int c)  
+	{  
 
+		int G =(c & 0x0000FF00 )>>8;  
+		return (float) (G/255.0);  
+	}  
 
-	private Bitmap decodeFile(File f) {
-		try {
-			// 修改图片尺寸
-			BitmapFactory.Options option = new BitmapFactory.Options();
-			option.inJustDecodeBounds = true;
-			BitmapFactory.decodeStream(new FileInputStream(f), null, option);
-			// 设置新的尺寸
-			final int REQUIRED_HEIGHT =(int)core.pageHeight/15;
-			final int REQUIRED_WIDTH = (int)core.pageWidth/15;
-			int width_tmp = option.outWidth, height_tmp = option.outHeight;
+	public static float getColorB(int c)  
+	{  
 
-			Log.w("thumbnail scale", (width_tmp + "  " + height_tmp));
-
-			int scale = 10;
-
-			BitmapFactory.Options o2 = new BitmapFactory.Options();
-			o2.inSampleSize = scale;
-			o2.inJustDecodeBounds = false;
-			return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
-		} catch (FileNotFoundException e) {
-			Log.e("thumbnail", e.getMessage());
-		}
-		return null;
-	}
-*/
+		int B = c & 0x000000FF;  
+		return (float) (B/255.0);  
+	}  
 
 }

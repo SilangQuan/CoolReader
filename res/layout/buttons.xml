@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
@@ -12,23 +11,32 @@
         android:layout_centerHorizontal="true" >
 
         <RelativeLayout
-			android:id="@+id/topBar0Main"
+            android:id="@+id/topBar0Main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/toolbar" >
 
-            <TextView
-                android:id="@+id/docNameText"
+            <ImageButton
+                android:id="@+id/showPDFMarksBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/linkButton"
                 android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dip"
+                android:background="@drawable/button"
+                android:src="@drawable/ic_action_outline" />
+
+            <TextView
+                android:id="@+id/docNameText"
+                android:layout_width="300dip"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:ellipsize="end"
                 android:paddingLeft="16dp"
                 android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/linkButton"
@@ -36,19 +44,31 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/reflowButton"
-                android:contentDescription="@string/toggle_links"
                 android:background="@drawable/button"
-                android:src="@drawable/ic_link" />
+                android:contentDescription="@string/toggle_links"
+                android:src="@drawable/ic_link"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/reflowButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/outlineButton"
-                android:contentDescription="@string/search_document"
+                android:layout_toLeftOf="@+id/shotButton"
                 android:background="@drawable/button"
-                android:src="@drawable/ic_reflow" />
+                android:contentDescription="@string/search_document"
+                android:src="@drawable/ic_reflow"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/shotButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/outlineButton"
+                android:background="@drawable/button"
+                android:contentDescription="@string/shot_screen"
+                android:src="@drawable/ic_action_screenshot" />
 
             <ImageButton
                 android:id="@+id/outlineButton"
@@ -56,31 +76,37 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/searchButton"
-                android:contentDescription="@string/search_document"
                 android:background="@drawable/button"
-                android:src="@drawable/ic_list" />
+                android:contentDescription="@string/search_document"
+                android:src="@drawable/ic_list"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/searchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/moreButton"
-                android:contentDescription="@string/search_document"
+                android:layout_toLeftOf="@+id/bookmarkpdfBtn"
                 android:background="@drawable/button"
-                android:src="@drawable/ic_magnifying_glass" />
+                android:contentDescription="@string/search_document"
+                android:src="@drawable/ic_action_search" />
 
             <ImageButton
-                android:id="@+id/moreButton"
+                android:id="@+id/bookmarkpdfBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/more"
-				android:background="@drawable/button"
-				android:onClick="OnMoreButtonClick"
-                android:src="@drawable/ic_more" />
+                android:layout_toLeftOf="@+id/shareButton"
+                android:background="@drawable/button"
+                android:src="@drawable/ic_action_bookmark" />
 
+            <ImageButton
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/button"
+                android:src="@drawable/ic_action_share" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -93,23 +119,23 @@
                 android:id="@+id/cancelSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:contentDescription="@string/cancel"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/cancel"
                 android:onClick="OnCancelSearchButtonClick"
                 android:src="@drawable/ic_cancel" />
 
             <EditText
                 android:id="@+id/searchText"
-                android:background="@drawable/search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/cancelSearch"
                 android:layout_toLeftOf="@+id/searchBack"
-                android:inputType="text"
+                android:layout_toRightOf="@+id/cancelSearch"
+                android:background="@drawable/search"
                 android:hint="@string/search"
+                android:inputType="text"
                 android:singleLine="true" />
 
             <ImageButton
@@ -118,20 +144,19 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/searchForward"
-                android:contentDescription="@string/search_backwards"
                 android:background="@drawable/button"
+                android:contentDescription="@string/search_backwards"
                 android:src="@drawable/ic_arrow_left" />
 
             <ImageButton
                 android:id="@+id/searchForward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:contentDescription="@string/search_forwards"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/search_forwards"
                 android:src="@drawable/ic_arrow_right" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -144,10 +169,10 @@
                 android:id="@+id/cancelAnnotButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:contentDescription="@string/cancel"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/cancel"
                 android:onClick="OnCancelAnnotButtonClick"
                 android:src="@drawable/ic_cancel" />
 
@@ -157,8 +182,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/underlineButton"
-                android:contentDescription="@string/highlight"
                 android:background="@drawable/button"
+                android:contentDescription="@string/highlight"
                 android:onClick="OnHighlightButtonClick"
                 android:src="@drawable/ic_highlight" />
 
@@ -168,8 +193,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/strikeOutButton"
-                android:contentDescription="@string/underline"
                 android:background="@drawable/button"
+                android:contentDescription="@string/underline"
                 android:onClick="OnUnderlineButtonClick"
                 android:src="@drawable/ic_underline" />
 
@@ -179,8 +204,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/inkButton"
-                android:contentDescription="@string/strike_out"
                 android:background="@drawable/button"
+                android:contentDescription="@string/strike_out"
                 android:onClick="OnStrikeOutButtonClick"
                 android:src="@drawable/ic_strike" />
 
@@ -188,13 +213,12 @@
                 android:id="@+id/inkButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:contentDescription="@string/ink"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/ink"
                 android:onClick="OnInkButtonClick"
                 android:src="@drawable/ic_pen" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -207,10 +231,10 @@
                 android:id="@+id/cancelDeleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:contentDescription="@string/cancel"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/cancel"
                 android:onClick="OnCancelDeleteButtonClick"
                 android:src="@drawable/ic_cancel" />
 
@@ -218,13 +242,12 @@
                 android:id="@+id/deleteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:contentDescription="@string/delete"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/delete"
                 android:onClick="OnDeleteButtonClick"
                 android:src="@drawable/ic_trash" />
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -237,12 +260,23 @@
                 android:id="@+id/cancelMoreButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:contentDescription="@string/cancel"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/cancel"
                 android:onClick="OnCancelMoreButtonClick"
                 android:src="@drawable/ic_cancel" />
+            <!--
+                 <ImageButton
+                android:id="@+id/outlineButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/searchButton"
+                android:contentDescription="@string/search_document"
+                android:background="@drawable/button"
+                android:src="@drawable/ic_list" />
+            -->
 
             <ImageButton
                 android:id="@+id/printButton"
@@ -250,8 +284,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/copyTextButton"
-                android:contentDescription="@string/print"
                 android:background="@drawable/button"
+                android:contentDescription="@string/print"
                 android:onClick="OnPrintButtonClick"
                 android:src="@drawable/ic_print" />
 
@@ -259,11 +293,11 @@
                 android:id="@+id/copyTextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignWithParentIfMissing="true"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/editAnnotButton"
-                android:layout_alignWithParentIfMissing="true"
-                android:contentDescription="@string/copy_text_to_the_clipboard"
                 android:background="@drawable/button"
+                android:contentDescription="@string/copy_text_to_the_clipboard"
                 android:onClick="OnCopyTextButtonClick"
                 android:src="@drawable/ic_clipboard" />
 
@@ -271,10 +305,10 @@
                 android:id="@+id/editAnnotButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:contentDescription="@string/edit_annotations"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/edit_annotations"
                 android:onClick="OnEditAnnotButtonClick"
                 android:src="@drawable/ic_annotation" />
         </RelativeLayout>
@@ -289,10 +323,10 @@
                 android:id="@+id/cancelAcceptButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:contentDescription="@string/cancel"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/cancel"
                 android:onClick="OnCancelAcceptButtonClick"
                 android:src="@drawable/ic_cancel" />
 
@@ -301,26 +335,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/cancelAcceptButton"
                 android:layout_toLeftOf="@+id/acceptButton"
+                android:layout_toRightOf="@+id/cancelAcceptButton"
                 android:gravity="center"
                 android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textStyle="bold" />
 
             <ImageButton
                 android:id="@+id/acceptButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:contentDescription="@string/accept"
+                android:layout_centerVertical="true"
                 android:background="@drawable/button"
+                android:contentDescription="@string/accept"
                 android:onClick="OnAcceptButtonClick"
                 android:src="@drawable/ic_check" />
         </RelativeLayout>
-        </ViewAnimator>
+    </ViewAnimator>
 
     <RelativeLayout
         android:id="@+id/lowerButtons"
@@ -336,14 +370,13 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="0dp"
-            android:thumb="@drawable/seek_thumb"
-            android:progressDrawable="@drawable/seek_progress"
+            android:background="@color/toolbar"
+            android:paddingBottom="8dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="12dp"
-            android:paddingBottom="8dp"
-            android:background="@color/toolbar"
-            />
+            android:progressDrawable="@drawable/seek_progress"
+            android:thumb="@drawable/seek_thumb" />
 
         <TextView
             android:id="@+id/pageNumber"
@@ -353,9 +386,110 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
             android:background="@drawable/page_num"
-            android:textColor="#FFFFFF"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#FFFFFF" />
 
+        <RelativeLayout
+            android:id="@+id/composer_btns"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/pageSlider"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:clipChildren="false"
+            android:clipToPadding="false" >
+
+            <ImageButton
+                android:id="@+id/composer_pencil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="142dp"
+                android:layout_marginRight="10.667dp"
+                android:background="@drawable/composer_pencil"
+                android:onClick="OnInkButtonClick"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/composer_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="135.333dp"
+                android:layout_marginRight="52dp"
+                android:background="@drawable/composer_cover"
+                android:onClick="OnHighlightButtonClick"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/composer_underline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="116.666dp"
+                android:layout_marginRight="89.33333333333333dp"
+                android:background="@drawable/composer_underline"
+                android:onClick="OnUnderlineButtonClick"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/composer_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="87.33333333333333dp"
+                android:layout_marginRight="118.6666666666667dp"
+                android:background="@drawable/composer_delete"
+                android:onClick="OnStrikeOutButtonClick"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/composer_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="50dp"
+                android:layout_marginRight="137.3333333333333dp"
+                android:background="@drawable/composer_copy"
+                android:onClick="OnCopyTextButtonClick"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/composer_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="8.666666666666667dp"
+                android:layout_marginRight="144dp"
+                android:background="@drawable/composer_color_pink"
+                android:onClick="OnColorButtonClick"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/show_hide"
+            android:layout_width="60dp"
+            android:layout_height="57.33333333333333dp"
+            android:layout_above="@+id/pageSlider"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/composer_button" >
+
+            <ImageView
+                android:id="@+id/show_hide_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/composer_plus" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <TextView
@@ -368,4 +502,5 @@
         android:background="@drawable/page_num"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF" />
+
 </RelativeLayout>

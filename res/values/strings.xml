@@ -55,4 +55,6 @@
     <string name="format_currently_not_supported">Format currently not supported</string>
     <string name="no_sdcard">No sdcard!</string>
     <string name="can_not_create_temp_path">Can not create path.</string>
+    <string name="shot_screen">Screen shot</string>
+    <string name="title_activity_bookmark">BookMark</string>
 </resources>
