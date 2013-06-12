@@ -15,6 +15,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.GradientDrawable.Orientation;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -62,7 +66,13 @@ public class ChoosePDFActivity extends ListActivity {
 		// Create a list adapter...
 		adapter = new ChoosePDFAdapter(getLayoutInflater());
 		setListAdapter(adapter);
-
+		
+		this.getListView().setBackgroundColor(Color.WHITE);
+		this.getListView().setFooterDividersEnabled(true);
+		//this.getListView().setDividerHeight(20);
+		this.getListView().setDivider(new ColorDrawable(Color.BLUE));
+		
+		
 		// ...that is updated dynamically when files are scanned
 		mHandler = new Handler();
 		mUpdateFiles = new Runnable() {

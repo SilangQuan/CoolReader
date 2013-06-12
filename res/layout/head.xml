@@ -5,22 +5,23 @@
     android:background="@drawable/title_bg" >
 
     <Button
-        android:id="@+id/btn_leftTop"
+        android:id="@+id/import_btn"
         android:layout_width="wrap_content"
-        android:layout_height="40dip"
+        android:layout_height="30dip"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dip"
-        android:background="@drawable/back_left"
+        android:background="@drawable/btn_selector"
         android:shadowColor="#aa000000"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="1"
-        android:text="返回"
+        android:text="Open"
         android:textColor="#ffffff"
         android:textSize="16dip" 
-         android:visibility="gone"/>
+       
+        />
 
     <TextView
         android:id="@+id/tv_head"

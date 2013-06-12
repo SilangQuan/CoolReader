@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.artifex.mupdfdemo.ChoosePDFActivity;
 import com.artifex.mupdfdemo.MuPDFActivity;
 import com.artifex.mupdfdemo.MuPDFCore;
 
@@ -68,6 +69,7 @@ public class BookShelfActivity extends Activity {
 	public static final int FINISHED= 0x000001; 
 	private Animation scaleAnim;
 	private int clickedBook;
+	private Button importBtn;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,6 +83,7 @@ public class BookShelfActivity extends Activity {
 		scaleAnim.setDuration(200);
 
 		bookShelf = (MyGridView) findViewById(R.id.bookShelf);
+		importBtn = (Button)findViewById(R.id.import_btn);
 		dataList = new ArrayList<String>();
 		iUtil = new ImageUtil(this);
 
@@ -105,7 +108,17 @@ public class BookShelfActivity extends Activity {
 			bookShelf.setNumColumns(4);
 		}    
 
-
+		importBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent();
+				intent.setClass(BookShelfActivity.this,ChoosePDFActivity.class); 
+				intent.setAction(Intent.ACTION_VIEW);
+				startActivity(intent);
+			}
+		});
 
 	}
 
